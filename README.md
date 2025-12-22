@@ -1,3 +1,4 @@
+
 # Resume Shortlisting Application
 
 A full-stack resume screening system with AI-powered candidate matching. Upload resumes (PDF/DOCX) and job descriptions to get instant match scores with detailed skill analysis and experience detection.
@@ -109,3 +110,7 @@ See [backend/README.md](backend/README.md) for complete API documentation.
 ---
 
 **Ready to screen resumes efficiently?** Start at http://localhost:3000 🎯
+
+# RESUME-SHORTLISTING
+An end-to-end AI-driven resume shortlisting platform that automatically analyzes resumes, compares them with job descriptions, and ranks candidates using NLP-based similarity matching and machine learning techniques.
+
