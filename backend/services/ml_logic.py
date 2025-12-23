@@ -72,30 +72,84 @@ def _detect_skills(text: str) -> List[str]:
 
 
 def _detect_experience(text: str) -> float:
-    """Estimate years of experience from resume text (heuristic)."""
+    """Estimate years of experience from resume text (heuristic).
+    
+    Attempts to extract experience in the following order:
+    1. Explicit "X years of experience" statements
+    2. Job tenure calculations from date ranges
+    3. Professional role level inference (fallback only)
+    """
     text_lower = text.lower()
     
-    # Look for experience patterns like "X years", "X+ years", etc.
-    patterns = [
-        r'(\d+)\+?\s+years?\s+(?:of\s+)?experience',
-        r'(?:experience|worked).*?(\d+)\+?\s+years?',
-        r'(\d+)\+?\s+years?\s+(?:in|with)',
+    # Priority 1: Look for explicit experience patterns like "X years", "X+ years", etc.
+    explicit_patterns = [
+        r'(\d+)\+?\s+years?\s+(?:of\s+)?(?:professional\s+)?experience',
+        r'total\s+experience:?\s*(\d+)\+?\s+years?',
+        r'experience:?\s*(\d+)\+?\s+years?',
     ]
     
     years = []
-    for pattern in patterns:
+    for pattern in explicit_patterns:
         matches = re.findall(pattern, text_lower)
         years.extend([int(m) for m in matches if m.isdigit()])
     
     if years:
-        return float(max(years))  # Return highest mentioned experience
+        # Return average if multiple values found, capped at 50 years
+        avg_years = sum(years) / len(years)
+        return min(float(avg_years), 50.0)
     
-    # If no explicit years found, estimate from job titles/keywords
-    if any(word in text_lower for word in ['senior', 'lead', 'principal', 'staff']):
-        return 8.0
-    elif any(word in text_lower for word in ['mid', 'intermediate']):
+    # Priority 2: Try to calculate from date ranges in work history
+    # Look for patterns like "Jan 2020 - Dec 2023" or "2020 - 2023"
+    date_patterns = [
+        r'(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)?\.?\s*(\d{4})\s*[-–]\s*(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)?\.?\s*(\d{4})',
+        r'(\d{4})\s*[-–]\s*(?:present|current|now|ongoing)',
+    ]
+    
+    total_duration = 0.0
+    for pattern in date_patterns:
+        matches = re.findall(pattern, text_lower)
+        for match in matches:
+            if isinstance(match, tuple):
+                if len(match) == 2:
+                    try:
+                        start_year = int(match[0])
+                        # Handle "present" case
+                        if match[1] in ('present', 'current', 'now', 'ongoing'):
+                            end_year = 2025  # Current year
+                        else:
+                            end_year = int(match[1])
+                        
+                        if start_year <= end_year:
+                            duration = end_year - start_year
+                            if 0 <= duration <= 50:  # Sanity check
+                                total_duration += duration
+                    except (ValueError, IndexError):
+                        pass
+            else:
+                try:
+                    year = int(match)
+                    # If we find "2020 - present" type pattern
+                    if year <= 2025:
+                        total_duration += (2025 - year)
+                except (ValueError, TypeError):
+                    pass
+    
+    if total_duration > 0:
+        # Average duration across jobs found
+        job_count = len(re.findall(r'(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec).*?\d{4}|(?:job|position|role|worked|employed)', text_lower))
+        if job_count > 0:
+            return min(float(total_duration / max(1, job_count)), 50.0)
+        return min(float(total_duration), 50.0)
+    
+    # Priority 3: Estimate from job level keywords (conservative estimates)
+    # Only use this if no explicit data is found
+    if any(word in text_lower for word in ['principal', 'director', 'vp ', 'vice president']):
+        return 15.0
+    elif any(word in text_lower for word in ['senior', 'lead', 'architect', 'staff']):
+        return 7.0
+    elif any(word in text_lower for word in ['mid-level', 'mid level', 'intermediate', 'specialist']):
         return 4.0
-    elif any(word in text_lower for word in ['junior', 'entry', 'graduate']):
+    elif any(word in text_lower for word in ['junior', 'entry', 'graduate', 'intern', 'trainee']):
         return 1.0
     
     return 0.0
