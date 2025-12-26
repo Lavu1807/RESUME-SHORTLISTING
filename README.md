@@ -20,7 +20,7 @@ A full-stack AI-driven resume screening system that analyzes resumes, compares t
 ## 🚀 Quick Start
 
 ### Prerequisites
-- Python 3.13+
+- Python 3.9+ (recommended)
 - Node.js 18+
 
 ### Backend Setup
@@ -144,7 +144,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ```
 frontend/
-├── app/
+- Fetch API client (`lib/api.js`)
 │   ├── layout.tsx          # Root layout, header
 │   ├── page.tsx            # Home page with upload form
 │   ├── results/
@@ -253,8 +253,8 @@ TF-IDF      BERT         Skill Detection
 ### Technology Stack
 
 #### Frontend
-- **Framework**: Next.js 14 (React 18)
-- **Language**: TypeScript
+- **Framework**: Next.js 16 (React 19)
+- **Language**: JavaScript (JSX)
 - **Styling**: Tailwind CSS
 - **Components**: Shadcn UI
 - **HTTP Client**: Fetch API
@@ -263,7 +263,7 @@ TF-IDF      BERT         Skill Detection
 #### Backend
 - **Framework**: FastAPI
 - **Server**: Uvicorn
-- **Language**: Python 3.13
+- **Language**: Python 3.9–3.13
 - **Text Extraction**:
   - pdfplumber (PDF parsing)
   - python-docx (DOCX parsing)
