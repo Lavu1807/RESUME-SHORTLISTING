@@ -163,30 +163,30 @@ frontend/
 │       ├── label.tsx            # Form label
 │       ├── progress.tsx         # Progress indicator
 │       └── textarea.tsx         # Text input
+frontend/
+├── app/
+│   ├── layout.jsx          # Root layout, header
+│   ├── page.jsx            # Home page with upload form
+│   ├── results/
+│   │   └── page.jsx        # Results display page
+│   └── globals.css         # Global styles
+├── components/
+│   ├── resume-upload-form.jsx   # Form with validation & API calls
+│   ├── results-view.jsx         # Results display with charts
+│   ├── label.jsx                # Custom label component
+│   ├── progress.jsx             # Progress bar component
+│   ├── textarea.jsx             # Custom textarea component
+│   └── ui/
+│       ├── badge.jsx            # Badge component
+│       ├── button.jsx           # Button component
+│       ├── card.jsx             # Card container
+│       ├── label.jsx            # Form label
+│       ├── progress.jsx         # Progress indicator
+│       └── textarea.jsx         # Text input
 ├── lib/
-│   ├── api.ts              # Fetch API client functions
-│   └── utils.ts            # Utility functions
+│   ├── api.js              # Fetch API client functions
+│   └── utils.js            # Utility functions
 └── public/                 # Static assets
-```
-
-### Data Flow (Frontend)
-
-```
-User Upload
-    │
-    ├─► Drag & Drop / File Input
-    │        │
-    │        ▼
-    └─► Form Validation
-         │
-         ├─► Resume file check (PDF/DOCX, < 10MB)
-         ├─► Job description check (non-empty)
-         │
-         ▼
-    API Call (scoreResume)
-         │
-         ├─► FormData: resume + job_description
-         ├─► POST to /score endpoint
          │
          ▼
     Response Handling
