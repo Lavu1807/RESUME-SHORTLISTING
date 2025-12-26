@@ -143,33 +143,12 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 ### Frontend Architecture (Next.js)
 
 ```
-frontend/
-- Fetch API client (`lib/api.js`)
-│   ├── layout.tsx          # Root layout, header
-│   ├── page.tsx            # Home page with upload form
-│   ├── results/
-│   │   └── page.tsx        # Results display page
-│   └── globals.css         # Global styles
-├── components/
-│   ├── resume-upload-form.tsx   # Form with validation & API calls
-│   ├── results-view.tsx         # Results display with charts
-│   ├── label.tsx                # Custom label component
-│   ├── progress.tsx             # Progress bar component
-│   ├── textarea.tsx             # Custom textarea component
-│   └── ui/
-│       ├── badge.tsx            # Badge component
-│       ├── button.tsx           # Button component
-│       ├── card.tsx             # Card container
-│       ├── label.tsx            # Form label
-│       ├── progress.tsx         # Progress indicator
-│       └── textarea.tsx         # Text input
-frontend/
-├── app/
-│   ├── layout.jsx          # Root layout, header
-│   ├── page.jsx            # Home page with upload form
-│   ├── results/
-│   │   └── page.jsx        # Results display page
-│   └── globals.css         # Global styles
+app/
+├── layout.jsx          # Root layout, header
+├── page.jsx            # Home page with upload form
+├── results/
+│   └── page.jsx        # Results display page
+└── globals.css         # Global styles
 ├── components/
 │   ├── resume-upload-form.jsx   # Form with validation & API calls
 │   ├── results-view.jsx         # Results display with charts
@@ -187,6 +166,14 @@ frontend/
 │   ├── api.js              # Fetch API client functions
 │   └── utils.js            # Utility functions
 └── public/                 # Static assets
+     │
+     ▼
+    Response Handling
+         │
+         ├─► Success: Store in sessionStorage
+         ├─► Display: results page with data
+         │
+         └─► Error: Show error message
          │
          ▼
     Response Handling
@@ -253,7 +240,7 @@ TF-IDF      BERT         Skill Detection
 ### Technology Stack
 
 #### Frontend
-- **Framework**: Next.js 16 (React 19)
+- **Framework**: Next.js (React)
 - **Language**: JavaScript (JSX)
 - **Styling**: Tailwind CSS
 - **Components**: Shadcn UI
@@ -587,36 +574,35 @@ resume-shortlisting/
 ├── .env.local                   # Frontend API URL config
 ├── .gitignore                   # Git ignore rules
 ├── package.json                 # NPM dependencies
-├── tsconfig.json                # TypeScript configuration
+├── jsconfig.json                # JavaScript configuration
 ├── postcss.config.mjs           # PostCSS config
-├── tailwind.config.ts           # Tailwind CSS config
-├── next.config.ts               # Next.js config
+├── next.config.js               # Next.js config
 ├── eslint.config.mjs            # ESLint config
 │
 ├── app/
-│   ├── layout.tsx               # Root layout with header
-│   ├── page.tsx                 # Home page with upload form
+│   ├── layout.jsx               # Root layout with header
+│   ├── page.jsx                 # Home page with upload form
 │   ├── globals.css              # Global styles
 │   ├── results/
-│   │   └── page.tsx             # Results display page
+│   │   └── page.jsx             # Results display page
 │
 ├── components/
-│   ├── resume-upload-form.tsx   # Upload + job description form
-│   ├── results-view.tsx         # Results display
-│   ├── label.tsx                # Form label component
-│   ├── progress.tsx             # Progress component
-│   ├── textarea.tsx             # Textarea component
+│   ├── resume-upload-form.jsx   # Upload + job description form
+│   ├── results-view.jsx         # Results display
+│   ├── label.jsx                # Form label component
+│   ├── progress.jsx             # Progress component
+│   ├── textarea.jsx             # Textarea component
 │   └── ui/                      # Shadcn UI components
-│       ├── badge.tsx
-│       ├── button.tsx
-│       ├── card.tsx
-│       ├── label.tsx
-│       ├── progress.tsx
-│       └── textarea.tsx
+│       ├── badge.jsx
+│       ├── button.jsx
+│       ├── card.jsx
+│       ├── label.jsx
+│       ├── progress.jsx
+│       └── textarea.jsx
 │
 ├── lib/
-│   ├── api.ts                   # Fetch API client
-│   └── utils.ts                 # Utility functions
+│   ├── api.js                   # Fetch API client
+│   └── utils.js                 # Utility functions
 │
 ├── public/                      # Static assets
 │
